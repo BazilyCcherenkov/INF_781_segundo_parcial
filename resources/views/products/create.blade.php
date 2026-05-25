@@ -1,0 +1,69 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Crear Producto') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <form method="POST" action="{{ route('products.store') }}">
+                        @csrf
+
+                        <div class="mb-4">
+                            <label for="name" class="block text-sm font-medium">Nombre</label>
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                                   class="mt-1 block w-full rounded border-gray-300 shadow-sm">
+                            @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="sku" class="block text-sm font-medium">SKU</label>
+                            <input type="text" name="sku" id="sku" value="{{ old('sku') }}" required
+                                   class="mt-1 block w-full rounded border-gray-300 shadow-sm">
+                            @error('sku') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="description" class="block text-sm font-medium">Descripción</label>
+                            <textarea name="description" id="description" rows="3"
+                                      class="mt-1 block w-full rounded border-gray-300 shadow-sm">{{ old('description') }}</textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="stock" class="block text-sm font-medium">Stock</label>
+                            <input type="number" name="stock" id="stock" value="{{ old('stock', 0) }}" min="0" required
+                                   class="mt-1 block w-full rounded border-gray-300 shadow-sm">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="price" class="block text-sm font-medium">Precio</label>
+                            <input type="number" step="0.01" name="price" id="price" value="{{ old('price') }}" min="0" required
+                                   class="mt-1 block w-full rounded border-gray-300 shadow-sm">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="warehouse_id" class="block text-sm font-medium">Almacén</label>
+                            <select name="warehouse_id" id="warehouse_id" required
+                                    class="mt-1 block w-full rounded border-gray-300 shadow-sm">
+                                <option value="">Seleccione...</option>
+                                @foreach (\App\Models\Warehouse::all() as $warehouse)
+                                    <option value="{{ $warehouse->id }}" @selected(old('warehouse_id') == $warehouse->id)>
+                                        {{ $warehouse->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="flex items-center justify-end space-x-2">
+                            <a href="{{ route('products.index') }}" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancelar</a>
+                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
