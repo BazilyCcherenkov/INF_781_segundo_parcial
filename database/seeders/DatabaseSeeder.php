@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Warehouse;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,38 +15,47 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleAndPermissionSeeder::class);
 
-        // Warehouses predefinidos
-        $warehouseA = Warehouse::create(['name' => 'Almacén Central', 'location' => 'Av. Principal 123']);
-        $warehouseB = Warehouse::create(['name' => 'Almacén Norte', 'location' => 'Calle Secundaria 456']);
+        $warehouseA = Warehouse::firstOrCreate(
+            ['name' => 'Almacén Central'],
+            ['location' => 'Av. Principal 123']
+        );
+        $warehouseB = Warehouse::firstOrCreate(
+            ['name' => 'Almacén Norte'],
+            ['location' => 'Calle Secundaria 456']
+        );
 
-        // Usuario admin (todos los permisos web)
-        $admin = User::factory()->create([
-            'name' => 'Admin Principal',
-            'email' => 'admin@almatrack.com',
-        ]);
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@almatrack.com'],
+            ['name' => 'Admin Principal', 'password' => 'password']
+        );
         $admin->assignRole('admin');
 
-        // Supervisor web
-        $supervisor = User::factory()->create([
-            'name' => 'Supervisor',
-            'email' => 'supervisor@almatrack.com',
-        ]);
+        $supervisor = User::firstOrCreate(
+            ['email' => 'supervisor@almatrack.com'],
+            ['name' => 'Supervisor', 'password' => 'password']
+        );
         $supervisor->assignRole('supervisor');
 
-        // Almacenista (web)
-        $almacenista = User::factory()->create([
-            'name' => 'Almacenista',
-            'email' => 'almacenista@almatrack.com',
-        ]);
+        $almacenista = User::firstOrCreate(
+            ['email' => 'almacenista@almatrack.com'],
+            ['name' => 'Almacenista', 'password' => 'password']
+        );
         $almacenista->assignRole('almacenista');
+        $almacenista->warehouse_id = $warehouseA->id;
+        $almacenista->save();
 
-        // Repartidor (api) — creamos un usuario con rol web para que pueda
-        // tener token de Sanctum y autenticarse por la API
-        $repartidor = User::factory()->create([
-            'name' => 'Repartidor',
-            'email' => 'repartidor@almatrack.com',
-        ]);
-        // El rol 'repartidor' pertenece al guard api; hay que especificarlo
-        $repartidor->assignRole('repartidor', 'api');
+        $repartidor = User::firstOrCreate(
+            ['email' => 'repartidor@almatrack.com'],
+            ['name' => 'Repartidor', 'password' => 'password']
+        );
+        // Rol en guard api: attach directo porque assignRole() usa guard web por defecto
+        $repartidorRole = Role::findByName('repartidor', 'api');
+        $alreadyAssigned = $repartidor->roles()
+            ->where('role_id', $repartidorRole->id)
+            ->exists();
+        if (!$alreadyAssigned) {
+            $repartidor->roles()->attach($repartidorRole->id);
+            app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+        }
     }
 }
