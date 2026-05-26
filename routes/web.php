@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
 Route::resource('products', ProductController::class);
 
 // Movements
+Route::get('/movements', [MovementController::class, 'index'])->name('movements.index');
 Route::get('/movements/create', [MovementController::class, 'create'])->name('movements.create');
 Route::post('/movements', [MovementController::class, 'store'])->name('movements.store');
 Route::patch('/movements/{movement}/approve', [MovementController::class, 'approve'])->name('movements.approve');

@@ -13,6 +13,17 @@ use Illuminate\View\View;
 class MovementController extends Controller
 {
     #[Middleware('auth')]
+    #[Middleware('permission:registrar movimiento')]
+    public function index(): View
+    {
+        $movements = Movement::with(['product', 'warehouse', 'user', 'approver'])
+            ->latest()
+            ->paginate(15);
+
+        return view('movements.index', compact('movements'));
+    }
+
+    #[Middleware('auth')]
     #[Middleware('permission:registrar movimiento', only: ['create', 'store'])]
     public function create(): View
     {
