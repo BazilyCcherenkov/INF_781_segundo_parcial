@@ -28,7 +28,7 @@
 
                         <div>
                             <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</label>
-                            <p class="mt-1 text-sm">{{ $product->description ?? 'Sin descripción' }}</p>
+                            <p class="mt-1 text-sm text-gray-700">{{ $product->description ?? 'Sin descripción' }}</p>
                         </div>
 
                         <div>
@@ -38,7 +38,7 @@
 
                         <div>
                             <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider">Almacén</label>
-                            <p class="mt-1 text-sm">{{ $product->warehouse->name ?? 'N/A' }}</p>
+                            <p class="mt-1 text-sm text-gray-700">{{ $product->warehouse->name ?? 'N/A' }}</p>
                             @if ($product->warehouse)
                                 <p class="text-xs text-gray-400">{{ $product->warehouse->location }}</p>
                             @endif
@@ -46,7 +46,7 @@
 
                         <div>
                             <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider">Creado</label>
-                            <p class="mt-1 text-sm">{{ $product->created_at->format('d/m/Y H:i') }}</p>
+                            <p class="mt-1 text-sm text-gray-700">{{ $product->created_at->format('d/m/Y H:i') }}</p>
                         </div>
                     </div>
 

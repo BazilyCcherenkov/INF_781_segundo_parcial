@@ -63,7 +63,7 @@
                                     @foreach ($movements as $mov)
                                         <tr class="hover:bg-gray-50 transition">
                                             <td class="py-3 px-4 text-sm text-gray-500 font-mono">#{{ $mov->id }}</td>
-                                            <td class="py-3 px-4 text-sm">{{ $mov->product->name ?? 'N/A' }}</td>
+                                            <td class="py-3 px-4 text-sm text-gray-700">{{ $mov->product->name ?? 'N/A' }}</td>
                                             <td class="py-3 px-4">
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                                                     {{ $mov->type === 'entry' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
@@ -77,7 +77,7 @@
                                                     {{ $mov->type === 'entry' ? 'Entrada' : 'Salida' }}
                                                 </span>
                                             </td>
-                                            <td class="py-3 px-4 text-sm font-medium">{{ $mov->quantity }}</td>
+                                            <td class="py-3 px-4 text-sm font-medium text-gray-700">{{ $mov->quantity }}</td>
                                             <td class="py-3 px-4 text-sm text-gray-500">{{ $mov->warehouse->name ?? 'N/A' }}</td>
                                             <td class="py-3 px-4 text-sm text-gray-500">{{ $mov->user->name ?? 'N/A' }}</td>
                                             <td class="py-3 px-4">

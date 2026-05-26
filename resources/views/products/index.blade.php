@@ -72,7 +72,7 @@
                                                     {{ $product->stock }}
                                                 </span>
                                             </td>
-                                            <td class="py-3 px-4 text-sm">${{ number_format($product->price, 2) }}</td>
+                                            <td class="py-3 px-4 text-sm text-gray-700">${{ number_format($product->price, 2) }}</td>
                                             <td class="py-3 px-4 text-sm text-gray-500">{{ $product->warehouse->name ?? 'N/A' }}</td>
                                             <td class="py-3 px-4">
                                                 <div class="flex items-center space-x-2">
